@@ -1,3 +1,6 @@
+import ipdb
+import decimal
+
 def game_dict():
     return {
         "home": {
@@ -182,3 +185,65 @@ def game_dict():
             ]
         }
     }
+
+teams = game_dict()
+
+all_players = teams["home"]["players"]+teams["away"]["players"]
+
+def num_points_per_game(hooper):
+    for player in all_players:
+        if player["name"] == hooper:
+            return player["points_per_game"]
+
+def player_age(hooper):
+    for player in all_players:
+        if player["name"] == hooper:
+            return player["age"]
+
+def team_colors(team_name):
+    if team_name == teams["home"]["team_name"]:
+        return teams["home"]["colors"]
+    elif team_name == teams["away"]["team_name"]:
+        return teams["away"]["colors"]
+
+def team_names():
+    return [teams["home"]["team_name"], teams["away"]["team_name"]]
+
+def player_numbers(team_name):
+    if team_name == teams["home"]["team_name"]:
+        return [hooper["number"] for hooper in teams["home"]["players"]]
+
+    if team_name == teams["away"]["team_name"]:
+        return [hooper["number"] for hooper in teams["away"]["players"]]    
+
+def player_stats(hooper):
+    for player in all_players:
+        if hooper == player["name"]:
+            return player
+
+def average_rebounds_per_brand(brand):
+    wearer_count = 0
+    rpg_sum = 0
+    for hooper in all_players:
+        if hooper["shoe_brand"] == brand:
+            wearer_count += 1
+            rpg_sum = rpg_sum + hooper["rebounds_per_game"]
+    average_rebounds = f"{rpg_sum / wearer_count:.2f}"
+    return average_rebounds
+    
+def average_rebounds_by_brand(brand):
+    average_boards = average_rebounds_per_brand(brand)
+    print(f"{brand}: {average_boards}")
+    
+
+def average_rebounds_by_shoe_brand():
+    shoe_rebound_dict = {}
+    brands = []
+    for player in all_players:
+        brand = player['shoe_brand']
+        if brand not in brands:
+            shoe_rebound_dict[brand] = average_rebounds_per_brand(brand)
+            brands.append(brand)
+    for brand in brands:
+        print(f"{brand}:  {shoe_rebound_dict[brand]}")
+        
